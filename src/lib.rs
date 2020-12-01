@@ -5,6 +5,7 @@ mod expense;
 
 pub struct Config {
     pub filename: String,
+    pub day: i32,
 }
 
 impl Config {
@@ -15,9 +16,11 @@ impl Config {
 
         let day = args[1].clone();
         let filename = format!("input/day{}.txt", day);
+        let day = to_number(&day);
 
         Ok(Config {
             filename,
+            day,
         })
     }
 }
@@ -27,17 +30,12 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
     let numbers = contents.lines().map(|x| to_number(x)).collect::<Vec<i32>>();
     
-
-    day1(numbers);
-
+    match config.day {
+        1 => day1(numbers),
+        _ => { println!("Not implemented") }
+    }
+    
     Ok(())
-}
-
-fn day1(contents: Vec<i32>) {
-    let answer = expense::multiply_two_entries_with_sum(&contents, 0);
-    println!("Answer for day 1 part 1: {}", answer);
-    let answer = expense::multiply_three_entries_with_sum(&contents, 0);
-    println!("Answer for day 1 part 2: {}", answer);
 }
 
 fn to_number(line: &str) -> i32 {
@@ -53,4 +51,11 @@ fn to_number(line: &str) -> i32 {
             }
         };
     line
+}
+
+fn day1(contents: Vec<i32>) {
+    let answer = expense::multiply_two_entries_with_sum(&contents, 0);
+    println!("Answer for day 1 part 1: {}", answer);
+    let answer = expense::multiply_three_entries_with_sum(&contents, 0);
+    println!("Answer for day 1 part 2: {}", answer);
 }
