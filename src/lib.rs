@@ -34,8 +34,10 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 fn day1(contents: Vec<i32>) {
-    let answer = expense::find_entries_with_sum(&contents, 0);
+    let answer = expense::multiply_two_entries_with_sum(&contents, 0);
     println!("Answer for day 1 part 1: {}", answer);
+    let answer = expense::multiply_three_entries_with_sum(&contents, 0);
+    println!("Answer for day 1 part 2: {}", answer);
 }
 
 fn to_number(line: &str) -> i32 {
