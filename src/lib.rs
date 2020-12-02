@@ -59,9 +59,9 @@ fn to_number(line: &str) -> i32 {
 }
 
 fn day1(contents: Vec<i32>) {
-    let answer = day1::multiply_two_entries_with_sum(&contents, 0);
+    let answer = day1::multiply_two_entries_with_sum(&contents, 2020);
     println!("Answer for day 1 part 1: {}", answer);
-    let answer = day1::multiply_three_entries_with_sum(&contents, 0);
+    let answer = day1::multiply_three_entries_with_sum(&contents, 2020);
     println!("Answer for day 1 part 2: {}", answer);
 }
 

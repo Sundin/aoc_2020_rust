@@ -2,7 +2,7 @@ fn find_two_entries_with_sum(contents: &Vec<i32>, sum: i32) -> (i32, i32) {
     let length = contents.len();
     for x in 0..length {
         for y in 0..length {
-            if contents[x] + contents[y] == 2020 {
+            if contents[x] + contents[y] == sum {
                 println!("{} + {} = 2020", contents[x], contents[y]);
                 return (contents[x], contents[y]);
             }
@@ -16,7 +16,7 @@ fn find_three_entries_with_sum(contents: &Vec<i32>, sum: i32) -> (i32, i32, i32)
     for x in 0..length {
         for y in 0..length {
             for z in 0..length {
-                if contents[x] + contents[y] + contents[z] == 2020 {
+                if contents[x] + contents[y] + contents[z] == sum {
                     println!("{} + {} + {} = 2020", contents[x], contents[y], contents[z]);
                     return (contents[x], contents[y], contents[z]);
                 }
@@ -43,24 +43,24 @@ mod tests {
     #[test]
     fn test_find_entries() {
         let v: Vec<i32> = vec![1721,979,366,299,675,1456];
-        assert_eq!((1721, 299), find_two_entries_with_sum(&v, 0));
+        assert_eq!((1721, 299), find_two_entries_with_sum(&v, 2020));
     }
 
     #[test]
     fn test_find_three_entries() {
         let v: Vec<i32> = vec![1721,979,366,299,675,1456];
-        assert_eq!((979, 366, 675), find_three_entries_with_sum(&v, 0));
+        assert_eq!((979, 366, 675), find_three_entries_with_sum(&v, 2020));
     }
 
     #[test]
     fn test_multiply_entries() {
         let v: Vec<i32> = vec![1721,979,366,299,675,1456];
-        assert_eq!(514579, multiply_two_entries_with_sum(&v, 0));
+        assert_eq!(514579, multiply_two_entries_with_sum(&v, 2020));
     }
 
     #[test]
     fn test_multiply_three_entries() {
         let v: Vec<i32> = vec![1721,979,366,299,675,1456];
-        assert_eq!(241861950, multiply_three_entries_with_sum(&v, 0));
+        assert_eq!(241861950, multiply_three_entries_with_sum(&v, 2020));
     }
 }
