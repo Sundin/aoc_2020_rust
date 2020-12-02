@@ -14,7 +14,7 @@ Run project:
 
 Run unit tests:
 
-    cargo test
+    cargo test -- --nocapture
 
 Just compile:
 
