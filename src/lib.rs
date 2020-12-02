@@ -1,7 +1,8 @@
 use std::error::Error;
 use std::fs;
 
-mod expense;
+mod day1;
+mod day2;
 
 pub struct Config {
     pub filename: String,
@@ -58,9 +59,9 @@ fn to_number(line: &str) -> i32 {
 }
 
 fn day1(contents: Vec<i32>) {
-    let answer = expense::multiply_two_entries_with_sum(&contents, 0);
+    let answer = day1::multiply_two_entries_with_sum(&contents, 0);
     println!("Answer for day 1 part 1: {}", answer);
-    let answer = expense::multiply_three_entries_with_sum(&contents, 0);
+    let answer = day1::multiply_three_entries_with_sum(&contents, 0);
     println!("Answer for day 1 part 2: {}", answer);
 }
 
