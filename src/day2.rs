@@ -1,36 +1,51 @@
-fn check_password(password: &str, min: u32, max: u32, letter: char) -> bool {
-    let occurences = password.matches(letter).count() as u32;
-    occurences >= min && occurences <= max
+use std::str::FromStr;
+use std::num::ParseIntError;
+
+pub struct PasswordPolicy {
+    pub password: String,
+    pub position1: usize,
+    pub position2: usize,
+    pub letter: char,
 }
 
-fn parse_and_check_password(input: &str) -> bool {
-    let split = input.split(":").collect::<Vec<&str>>();
-    let password = split[1].trim();
-    let first_half = split[0].split("-").collect::<Vec<&str>>();
-    let min = first_half[0].parse::<u32>().unwrap();
-    let finale = first_half[1].split(" ").collect::<Vec<&str>>();
-    let max = finale[0].parse::<u32>().unwrap();
-    let letter = finale[1].trim().chars().nth(0).unwrap();
-    println!("input: {}, min: {}, max: {}, letter: {}, password: {}", input, min, max, letter, password);
-    check_password(password, min, max, letter)
+impl FromStr for PasswordPolicy {
+    type Err = ParseIntError;
+
+    fn from_str(input: &str) -> Result<Self, Self::Err> {
+        let split = input.split(":").collect::<Vec<&str>>();
+        let password = split[1].trim();
+        let first_half = split[0].split("-").collect::<Vec<&str>>();
+        let min = first_half[0].parse::<usize>()?;
+        let finale = first_half[1].split(" ").collect::<Vec<&str>>();
+        let max = finale[0].parse::<usize>()?;
+        let letter = finale[1].trim().chars().nth(0).unwrap();
+
+        Ok(PasswordPolicy { password: password.to_string(), position1: min, position2: max, letter: letter })
+    }
+}
+
+fn check_password_policy(password_policy: PasswordPolicy) -> bool {
+    let occurences = password_policy.password.matches(password_policy.letter).count() as usize;
+    occurences >= password_policy.position1 && occurences <= password_policy.position2
 }
 
 pub fn count_valid_password(input: &str) -> i32 {
     let mut count = 0;
     for line in input.lines() {
-        if parse_and_check_password(line) {
+        let password_policy = PasswordPolicy::from_str(line).unwrap();
+        if check_password_policy(password_policy) {
             count += 1;
         }
     }
     count
 }
 
-fn check_occurence(password: &str, position1: usize, position2: usize, letter: char) -> bool {
+fn check_password_policy_2(password_policy: PasswordPolicy) -> bool {
     let mut answer = false;
-    if password.chars().nth(position1-1).unwrap() == letter {
+    if password_policy.password.chars().nth(password_policy.position1-1).unwrap() == password_policy.letter {
         answer = !answer;
     }
-    if password.chars().nth(position2-1).unwrap() == letter {
+    if password_policy.password.chars().nth(password_policy.position2-1).unwrap() == password_policy.letter {
         answer = !answer;
     }
     answer
@@ -39,23 +54,12 @@ fn check_occurence(password: &str, position1: usize, position2: usize, letter: c
 pub fn count_valid_occurences(input: &str) -> i32 {
     let mut count = 0;
     for line in input.lines() {
-        if parse_and_check_occurences(line) {
+        let password_policy = PasswordPolicy::from_str(line).unwrap();
+        if check_password_policy_2(password_policy) {
             count += 1;
         }
     }
     count
-}
-
-fn parse_and_check_occurences(input: &str) -> bool {
-    let split = input.split(":").collect::<Vec<&str>>();
-    let password = split[1].trim();
-    let first_half = split[0].split("-").collect::<Vec<&str>>();
-    let min = first_half[0].parse::<usize>().unwrap();
-    let finale = first_half[1].split(" ").collect::<Vec<&str>>();
-    let max = finale[0].parse::<usize>().unwrap();
-    let letter = finale[1].trim().chars().nth(0).unwrap();
-    println!("input: {}, min: {}, max: {}, letter: {}, password: {}", input, min, max, letter, password);
-    check_occurence(password, min, max, letter)
 }
 
 #[cfg(test)]
@@ -63,30 +67,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_check_password() {
-        assert_eq!(true, check_password("abcde", 1, 3, 'a'));
-        assert_eq!(true, check_password("ccccccccc", 2, 9, 'c'));
-        assert_eq!(false, check_password("cdefg", 1, 3, 'b'));
-    }
-
-    #[test]
-    fn test_parse_and_check() {
-        assert_eq!(true, parse_and_check_password("1-3 a: abcde"));
-        assert_eq!(true, parse_and_check_password("2-9 c: ccccccccc"));
-        assert_eq!(false, parse_and_check_password("1-3 b: cdefg"));
+    fn test_check_password_policy() {
+        let p = PasswordPolicy { password: "abcde".to_string(), position1: 1, position2: 3, letter: 'a' };
+        assert_eq!(true, check_password_policy(p));
+        let p = PasswordPolicy { password: "ccccccccc".to_string(), position1: 2, position2: 9, letter: 'c' };
+        assert_eq!(true, check_password_policy(p));
+        let p = PasswordPolicy { password: "cdefg".to_string(), position1: 1, position2: 3, letter: 'b' };
+        assert_eq!(false, check_password_policy(p));
     }
 
     #[test]
     fn test_occurence() {
-        assert_eq!(true, check_occurence("abcde", 1, 3, 'a'));
-        assert_eq!(false, check_occurence("cdefg", 1, 3, 'b'));
-        assert_eq!(false, check_occurence("ccccccccc", 2, 9, 'c'));
-    }
-
-    #[test]
-    fn test_parse_and_occur() {
-        assert_eq!(true, parse_and_check_occurences("1-3 a: abcde"));
-        assert_eq!(false, parse_and_check_occurences("2-9 c: ccccccccc"));
-        assert_eq!(false, parse_and_check_occurences("1-3 b: cdefg"));
+        let p = PasswordPolicy { password: "abcde".to_string(), position1: 1, position2: 3, letter: 'a' };
+        assert_eq!(true, check_password_policy_2(p));
+        let p = PasswordPolicy { password: "ccccccccc".to_string(), position1: 2, position2: 9, letter: 'c' };
+        assert_eq!(false, check_password_policy_2(p));
+        let p = PasswordPolicy { password: "cdefg".to_string(), position1: 1, position2: 3, letter: 'b' };
+        assert_eq!(false, check_password_policy_2(p));
     }
 }
