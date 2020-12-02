@@ -1,16 +1,27 @@
 use substring::Substring;
 
-fn check_password(password: &str, min: i32, max: i32, letter: char) -> bool {
-    let occurences = password.matches(letter).count() as i32;
+fn check_password(password: &str, min: u32, max: u32, letter: char) -> bool {
+    let occurences = password.matches(letter).count() as u32;
     occurences >= min && occurences <= max
 }
 
 fn parse_and_check_password(input: &str) -> bool {
-    let min = input.chars().nth(0).unwrap() as i32;
-    let max = input.chars().nth(2).unwrap() as i32;
+    let min = input.chars().nth(0).unwrap().to_digit(10).unwrap();
+    let max = input.chars().nth(2).unwrap().to_digit(10).unwrap();
     let letter = input.chars().nth(4).unwrap();
     let password = input.substring(7, input.len());
+    println!("input: {}, min: {}, max: {}, letter: {}, password: {}", input, min, max, letter, password);
     check_password(password, min, max, letter)
+}
+
+pub fn count_valid_password(input: &str) -> i32 {
+    let mut count = 0;
+    for line in input.lines() {
+        if parse_and_check_password(line) {
+            count += 1;
+        }
+    }
+    0
 }
 
 #[cfg(test)]
