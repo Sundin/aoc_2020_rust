@@ -42,10 +42,16 @@ pub fn count_valid_password(input: &str) -> i32 {
 
 fn check_password_policy_2(password_policy: PasswordPolicy) -> bool {
     let mut answer = false;
-    if password_policy.password.chars().nth(password_policy.position1-1).unwrap() == password_policy.letter {
+    
+    let password = password_policy.password;
+    let pos1 = password_policy.position1-1;
+    let pos2 = password_policy.position2-1;
+    let letter = password_policy.letter;
+
+    if password.chars().nth(pos1).unwrap() == letter {
         answer = !answer;
     }
-    if password_policy.password.chars().nth(password_policy.position2-1).unwrap() == password_policy.letter {
+    if password.chars().nth(pos2).unwrap() == letter {
         answer = !answer;
     }
     answer
