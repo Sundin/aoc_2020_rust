@@ -68,4 +68,6 @@ fn day1(contents: Vec<i32>) {
 fn day2(contents: &str) {
     let answer = day2::count_valid_password(&contents);
     println!("Answer for day 2 part 1: {}", answer);
+    let answer = day2::count_valid_occurences(&contents);
+    println!("Answer for day 2 part 2: {}", answer);
 }
