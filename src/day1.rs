@@ -39,6 +39,7 @@ pub fn multiply_three_entries_with_sum(contents: &Vec<i32>, sum: i32) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use super::super::files;
 
     #[test]
     fn test_find_entries() {
@@ -62,5 +63,19 @@ mod tests {
     fn test_multiply_three_entries() {
         let v: Vec<i32> = vec![1721,979,366,299,675,1456];
         assert_eq!(241861950, multiply_three_entries_with_sum(&v, 2020));
+    }
+
+    #[test]
+    fn test_part_1() {
+        let contents = files::get_file_contents("test_input/day1.txt".to_owned()).unwrap();
+        let contents = files::as_integers(&contents);
+        assert_eq!(514579, multiply_two_entries_with_sum(&contents, 2020));
+    }
+
+    #[test]
+    fn test_part_2() {
+        let contents = files::get_file_contents("test_input/day1.txt".to_owned()).unwrap();
+        let contents = files::as_integers(&contents);
+        assert_eq!(241861950, multiply_three_entries_with_sum(&contents, 2020));
     }
 }
