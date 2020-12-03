@@ -19,6 +19,14 @@ impl FromStr for Row {
     }
 }
 
+fn has_tree_at(row: Row, x: i32) -> bool {
+    let length = row.trees.len() as i32;
+    let modulus = x / length;
+    let rem = x - modulus * length;
+    println!("mod: {}", rem);
+    row.trees[rem as usize]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -28,5 +36,17 @@ mod tests {
         let row = Row::from_str("..##.").unwrap();
         let expected = Row{ trees: vec![false,false,true,true,false] };
         assert_eq!(expected, row);
+    }
+
+    #[test]
+    fn test_tree_at() {
+        let row = Row::from_str("..##.").unwrap();
+        assert_eq!(false, has_tree_at(row, 0));
+        let row = Row::from_str("..##.").unwrap();
+        assert_eq!(true, has_tree_at(row, 2));
+        let row = Row::from_str("..##.").unwrap();
+        assert_eq!(true, has_tree_at(row, 2));
+        let row = Row::from_str("..##.").unwrap();
+        assert_eq!(false, has_tree_at(row, 5));
     }
 }
