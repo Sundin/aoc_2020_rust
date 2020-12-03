@@ -68,6 +68,7 @@ fn check_slope_down_2(input: &str) -> i64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use super::super::files;
 
     #[test]
     fn test_from_str() {
@@ -86,5 +87,12 @@ mod tests {
         assert_eq!(true, has_tree_at(row, 2));
         let row = Row::from_str("..##.").unwrap();
         assert_eq!(false, has_tree_at(row, 5));
+    }
+
+    #[test]
+    fn test_part_1() {
+        let contents = files::get_file_contents("test_input/day3.txt".to_owned()).unwrap();
+
+        assert_eq!(7, part_1(&contents));
     }
 }
