@@ -19,12 +19,11 @@ impl FromStr for Row {
     }
 }
 
-fn has_tree_at(row: Row, x: i32) -> bool {
-    let length = row.trees.len() as i32;
+fn has_tree_at(row: Row, x: usize) -> bool {
+    let length = row.trees.len();
     let modulus = x / length;
-    let rem = x - modulus * length;
-    println!("mod: {}", rem);
-    row.trees[rem as usize]
+    let remainder = x - modulus * length;
+    row.trees[remainder]
 }
 
 #[cfg(test)]
