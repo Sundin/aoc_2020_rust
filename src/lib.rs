@@ -4,6 +4,7 @@ mod files;
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 pub struct Config {
     pub filename: String,
@@ -35,6 +36,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         1 => day1(files::as_integers(&contents)),
         2 => day2(&contents),
         3 => day3(&contents),
+        4 => day4(&contents),
         _ => { println!("Not implemented") }
     }
     
@@ -59,5 +61,12 @@ fn day3(contents: &str) {
     let answer = day3::part_1(&contents);
     println!("Answer for day 3 part 1: {}", answer);
     let answer = day3::part_2(&contents);
+    println!("Answer for day 3 part 2: {}", answer);
+}
+
+fn day4(contents: &str) {
+    let answer = day4::part_1(&contents);
+    println!("Answer for day 3 part 1: {}", answer);
+    let answer = day4::part_2(&contents);
     println!("Answer for day 3 part 2: {}", answer);
 }
