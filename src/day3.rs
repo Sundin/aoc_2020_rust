@@ -26,21 +26,21 @@ fn has_tree_at(row: Row, x: usize) -> bool {
     row.trees[remainder]
 }
 
-pub fn part_1(input: &str) -> i32 {
+pub fn part_1(input: &str) -> i64 {
     check_slope(&input, 3)
 }
 
 pub fn part_2(input: &str) -> i64 {
-    let a = check_slope(&input, 1) as i64;
-    let b = check_slope(&input, 3) as i64;
-    let c = check_slope(&input, 5) as i64;
-    let d = check_slope(&input, 7) as i64;
-    let e = check_slope_down_2(&input) as i64;
+    let a = check_slope(&input, 1);
+    let b = check_slope(&input, 3);
+    let c = check_slope(&input, 5);
+    let d = check_slope(&input, 7);
+    let e = check_slope_down_2(&input);
 
     a * b * c * d * e
 }
 
-fn check_slope(input: &str, right: usize) -> i32 {
+fn check_slope(input: &str, right: usize) -> i64 {
     let mut count = 0;
     for (x, line) in input.lines().enumerate() {
         let row = Row::from_str(line).unwrap();
@@ -51,7 +51,7 @@ fn check_slope(input: &str, right: usize) -> i32 {
     count
 }
 
-fn check_slope_down_2(input: &str) -> i32 {
+fn check_slope_down_2(input: &str) -> i64 {
     let mut count = 0;
     for (x, line) in input.lines().enumerate() {
         if x % 2 == 1 {
