@@ -42,7 +42,7 @@ pub fn count_valid_password(input: &str) -> i32 {
 
 fn check_password_policy_2(password_policy: PasswordPolicy) -> bool {
     let mut answer = false;
-    
+
     let password = password_policy.password;
     let pos1 = password_policy.position1-1;
     let pos2 = password_policy.position2-1;
@@ -71,6 +71,7 @@ pub fn count_valid_occurences(input: &str) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use super::super::*;
 
     #[test]
     fn test_check_password_policy() {
@@ -90,5 +91,17 @@ mod tests {
         assert_eq!(false, check_password_policy_2(p));
         let p = PasswordPolicy { password: "cdefg".to_string(), position1: 1, position2: 3, letter: 'b' };
         assert_eq!(false, check_password_policy_2(p));
+    }
+
+    #[test]
+    fn test_part_1() {
+        let contents = files::get_file_contents("test_input/day2.txt".to_owned()).unwrap();
+        assert_eq!(2, count_valid_password(&contents));
+    }
+
+    #[test]
+    fn test_part_2() {
+        let contents = files::get_file_contents("test_input/day2.txt".to_owned()).unwrap();
+        assert_eq!(1, count_valid_occurences(&contents));
     }
 }
