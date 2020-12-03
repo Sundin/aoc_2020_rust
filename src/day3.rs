@@ -1,7 +1,7 @@
 use std::str::FromStr;
 use std::num::ParseIntError;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Row {
     pub trees: Vec<bool>, 
 }
