@@ -30,11 +30,37 @@ pub fn part_1(input: &str) -> i32 {
     check_slope(&input, 3)
 }
 
+pub fn part_2(input: &str) -> i32 {
+    let a = check_slope(&input, 1);
+    let b = check_slope(&input, 3);
+    let c = check_slope(&input, 5);
+    let d = check_slope(&input, 7);
+    let e = check_slope_down_2(&input);
+
+    println!("{} * {} * {} * {} * {}", a, b, c, d, e);
+    //a * b * c * d * e
+    0
+}
+
 fn check_slope(input: &str, right: usize) -> i32 {
     let mut count = 0;
     for (x, line) in input.lines().enumerate() {
         let row = Row::from_str(line).unwrap();
         if has_tree_at(row, x*right) {
+            count += 1;
+        }
+    }
+    count
+}
+
+fn check_slope_down_2(input: &str) -> i32 {
+    let mut count = 0;
+    for (x, line) in input.lines().enumerate() {
+        if x % 2 == 1 {
+            continue;
+        }
+        let row = Row::from_str(line).unwrap();
+        if has_tree_at(row, x/2) {
             count += 1;
         }
     }
