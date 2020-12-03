@@ -26,6 +26,17 @@ fn has_tree_at(row: Row, x: usize) -> bool {
     row.trees[remainder]
 }
 
+pub fn part_1(input: &str) -> i32 {
+    let mut count = 0;
+    for (x, line) in input.lines().enumerate() {
+        let row = Row::from_str(line).unwrap();
+        if has_tree_at(row, x*3) {
+            count += 1;
+        }
+    }
+    count
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

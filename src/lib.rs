@@ -34,6 +34,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     match config.day {
         1 => day1(as_integers(&contents)),
         2 => day2(&contents),
+        3 => day3(&contents),
         _ => { println!("Not implemented") }
     }
     
@@ -71,4 +72,9 @@ fn day2(contents: &str) {
     println!("Answer for day 2 part 1: {}", answer);
     let answer = day2::count_valid_occurences(&contents);
     println!("Answer for day 2 part 2: {}", answer);
+}
+
+fn day3(contents: &str) {
+    let answer = day3::part_1(&contents);
+    println!("Answer for day 3 part 1: {}", answer);
 }
