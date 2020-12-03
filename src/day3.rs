@@ -21,8 +21,7 @@ impl FromStr for Row {
 
 fn has_tree_at(row: Row, x: usize) -> bool {
     let length = row.trees.len();
-    let modulus = x / length;
-    let remainder = x - modulus * length;
+    let remainder = x % length;
     row.trees[remainder]
 }
 
