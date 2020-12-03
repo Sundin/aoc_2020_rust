@@ -27,10 +27,14 @@ fn has_tree_at(row: Row, x: usize) -> bool {
 }
 
 pub fn part_1(input: &str) -> i32 {
+    check_slope(&input, 3)
+}
+
+fn check_slope(input: &str, right: usize) -> i32 {
     let mut count = 0;
     for (x, line) in input.lines().enumerate() {
         let row = Row::from_str(line).unwrap();
-        if has_tree_at(row, x*3) {
+        if has_tree_at(row, x*right) {
             count += 1;
         }
     }
