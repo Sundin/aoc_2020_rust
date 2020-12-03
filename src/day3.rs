@@ -92,7 +92,12 @@ mod tests {
     #[test]
     fn test_part_1() {
         let contents = files::get_file_contents("test_input/day3.txt".to_owned()).unwrap();
-
         assert_eq!(7, part_1(&contents));
+    }
+
+    #[test]
+    fn test_part_2() {
+        let contents = files::get_file_contents("test_input/day3.txt".to_owned()).unwrap();
+        assert_eq!(336, part_2(&contents));
     }
 }
