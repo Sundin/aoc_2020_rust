@@ -1,11 +1,8 @@
 
 use lazy_static::lazy_static;
-
 use regex::Regex;
-use std::collections::HashSet;
 
 use super::files;
-
 
 fn is_valid(input: &str) -> bool {
     input.contains("byr:") &&
@@ -27,7 +24,6 @@ fn is_valid_regex(input: &str) -> bool {
     passport_id_valid(&input)
 }
 
-// TODO: check values
 fn birth_year_valid(input: &str) -> bool {
     lazy_static! {
         static ref REGEX : Regex = Regex::new(
@@ -39,38 +35,72 @@ fn birth_year_valid(input: &str) -> bool {
     }
     let byr = REGEX.captures_iter(input).nth(0).unwrap();
     let byr = byr[0].trim().split(":").collect::<Vec<&str>>();
-    println!("{:?}", byr[1]);
-    true
+    let byr = files::to_number(byr[1]);
+    byr >= 1920 && byr <= 2002
 }
 
-// TODO: check values
 fn issue_year_valid(input: &str) -> bool {
     lazy_static! {
         static ref REGEX : Regex = Regex::new(
                 r"iyr:\d{4}\s"
             ).unwrap();
     }
-    REGEX.find_iter(input).nth(0).is_some()
+    if !REGEX.find_iter(input).nth(0).is_some() {
+        return false
+    }
+    let iyr = REGEX.captures_iter(input).nth(0).unwrap();
+    let iyr = iyr[0].trim().split(":").collect::<Vec<&str>>();
+    let iyr = files::to_number(iyr[1]);
+    iyr >= 2010 && iyr <= 2020
 }
 
-// TODO: check values
 fn expiration_year_valid(input: &str) -> bool {
     lazy_static! {
         static ref REGEX : Regex = Regex::new(
                 r"eyr:\d{4}\s"
             ).unwrap();
     }
-    REGEX.find_iter(input).nth(0).is_some()
+    if !REGEX.find_iter(input).nth(0).is_some() {
+        return false
+    }
+    let eyr = REGEX.captures_iter(input).nth(0).unwrap();
+    let eyr = eyr[0].trim().split(":").collect::<Vec<&str>>();
+    let eyr = files::to_number(eyr[1]);
+    eyr >= 2020 && eyr <= 2030
 }
 
-// TODO: check values
 fn height_valid(input: &str) -> bool {
+    valid_centimeters(&input) || valid_inches(&input)
+}
+
+fn valid_centimeters(input: &str) -> bool {
     lazy_static! {
         static ref REGEX : Regex = Regex::new(
-                r"hgt:\d{2,3}(cm|in)\s"
+                r"hgt:(\d\d\d)(cm)\s"
             ).unwrap();
     }
-    REGEX.find_iter(input).nth(0).is_some()
+    if !REGEX.find_iter(input).nth(0).is_some() {
+        return false
+    }
+    let cm = REGEX.captures_iter(input).nth(0).unwrap();
+    let cm = cm[1].trim().split(":").collect::<Vec<&str>>();
+    let cm = files::to_number(cm[0]);
+    cm >= 150 && cm <= 193
+}
+
+fn valid_inches(input: &str) -> bool {
+    lazy_static! {
+        static ref REGEX : Regex = Regex::new(
+                r"hgt:(\d\d)(in)\s"
+            ).unwrap();
+    }
+    if !REGEX.find_iter(input).nth(0).is_some() {
+        return false
+    }
+    let inches = REGEX.captures_iter(input).nth(0).unwrap();
+    let inches = inches[1].trim().split(":").collect::<Vec<&str>>();
+    let inches = files::to_number(inches[0]);
+    inches >= 59 && inches <= 76
 }
 
 fn hair_color_valid(input: &str) -> bool {
@@ -107,10 +137,6 @@ pub fn part_1(input: &str) -> i64 {
         if line == "" {
             if is_valid(&passport) {
                 count += 1;
-                println!("valid passport {}: {}",count, passport);
-            } else {
-                println!("invalid passport: {}", passport);
-
             }
             passport = String::new();
         } else {
@@ -119,7 +145,6 @@ pub fn part_1(input: &str) -> i64 {
     }
     if is_valid(&passport) {
         count += 1;
-        println!("valid passport {}: {}",count, passport);
     }
     count
 }
@@ -131,10 +156,6 @@ pub fn part_2(input: &str) -> i64 {
         if line == "" {
             if is_valid_regex(&passport) {
                 count += 1;
-                println!("valid passport {}: {}",count, passport);
-            } else {
-                println!("invalid passport: {}", passport);
-
             }
             passport = String::new();
         } else {
@@ -143,7 +164,6 @@ pub fn part_2(input: &str) -> i64 {
     }
     if is_valid_regex(&passport) {
         count += 1;
-        println!("valid passport {}: {}",count, passport);
     }
     count
 }
