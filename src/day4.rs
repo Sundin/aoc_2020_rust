@@ -31,14 +31,21 @@ pub fn part_1(input: &str) -> i64 {
     let mut passport = String::new();
     for line in input.lines() {
         if line == "" {
-            println!("passport: {}", passport);
             if is_valid(&passport) {
                 count += 1;
+                println!("valid passport {}: {}",count, passport);
+            } else {
+                println!("invalid passport: {}", passport);
+
             }
             passport = String::new();
         } else {
-            passport = String::new() + &passport + line;
+            passport = String::new() + &passport + line + " ";
         }
+    }
+    if is_valid(&passport) {
+        count += 1;
+        println!("valid passport {}: {}",count, passport);
     }
     count
 }
