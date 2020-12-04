@@ -178,7 +178,7 @@ mod tests {
     #[test]
     fn test_part_1() {
         let contents = files::get_file_contents("test_input/day4.txt".to_owned()).unwrap();
-        assert_eq!(6, part_1(&contents));
+        assert_eq!(10, part_1(&contents));
     }
 
     #[test]
