@@ -117,7 +117,27 @@ pub fn part_1(input: &str) -> i64 {
 }
 
 pub fn part_2(input: &str) -> i64 {
-    0
+    let mut count = 0;
+    let mut passport = String::new();
+    for line in input.lines() {
+        if line == "" {
+            if is_valid_regex(&passport) {
+                count += 1;
+                println!("valid passport {}: {}",count, passport);
+            } else {
+                println!("invalid passport: {}", passport);
+
+            }
+            passport = String::new();
+        } else {
+            passport = String::new() + &passport + line + " ";
+        }
+    }
+    if is_valid_regex(&passport) {
+        count += 1;
+        println!("valid passport {}: {}",count, passport);
+    }
+    count
 }
 
 
@@ -148,27 +168,6 @@ mod tests {
     }
 
     #[test]
-    fn test_is_valid_regex() {
-        let input = "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
-        byr:1937 iyr:2017 cid:147 hgt:183cm";
-        assert_eq!(true, is_valid_regex(&input));
-
-        let input = "iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
-        hcl:#cfa07d byr:1929";
-        assert_eq!(false, is_valid_regex(&input));
-
-        let input = "hcl:#ae17e1 iyr:2013
-        eyr:2024
-        ecl:brn pid:760753108 byr:1931
-        hgt:179cm";
-        assert_eq!(true, is_valid_regex(&input));
-
-        let input = "hcl:#cfa07d eyr:2025 pid:166559648
-        iyr:2011 ecl:brn hgt:59in";
-        assert_eq!(false, is_valid_regex(&input));
-    }
-
-    #[test]
     fn test_pid() {
         let input = "pid:000000001 ";
         assert_eq!(true, passport_id_valid(&input));
@@ -179,12 +178,12 @@ mod tests {
     #[test]
     fn test_part_1() {
         let contents = files::get_file_contents("test_input/day4.txt".to_owned()).unwrap();
-        assert_eq!(2, part_1(&contents));
+        assert_eq!(6, part_1(&contents));
     }
 
     #[test]
     fn test_part_2() {
         let contents = files::get_file_contents("test_input/day4.txt".to_owned()).unwrap();
-        assert_eq!(0, part_2(&contents));
+        assert_eq!(6, part_2(&contents));
     }
 }
