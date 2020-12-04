@@ -1,20 +1,9 @@
-use std::str::FromStr;
-use std::num::ParseIntError;
 
-#[derive(Debug, PartialEq, Eq)]
-pub struct Passport {
-    pub raw: String, 
-}
+use lazy_static::lazy_static;
 
-impl FromStr for Passport {
-    type Err = ParseIntError;
+use regex::Regex;
+use std::collections::HashSet;
 
-    fn from_str(input: &str) -> Result<Self, Self::Err> {
-        let raw = input.to_owned();
-
-        Ok(Passport { raw: raw })
-    }
-}
 
 fn is_valid(input: &str) -> bool {
     input.contains("byr:") &&
@@ -24,6 +13,83 @@ fn is_valid(input: &str) -> bool {
     input.contains("hcl:") &&
     input.contains("ecl:") &&
     input.contains("pid:")
+}
+
+fn is_valid_regex(input: &str) -> bool {
+    birth_year_valid(&input) &&
+    issue_year_valid(&input) &&
+    expiration_year_valid(&input) &&
+    height_valid(&input) &&
+    hair_color_valid(&input) &&
+    eye_color_valid(&input) &&
+    passport_id_valid(&input)
+}
+
+// TODO: check values
+fn birth_year_valid(input: &str) -> bool {
+    lazy_static! {
+        static ref REGEX : Regex = Regex::new(
+                r"byr:\d{4}\s"
+            ).unwrap();
+    }
+    REGEX.find_iter(input).nth(0).is_some()
+}
+
+// TODO: check values
+fn issue_year_valid(input: &str) -> bool {
+    lazy_static! {
+        static ref REGEX : Regex = Regex::new(
+                r"iyr:\d{4}\s"
+            ).unwrap();
+    }
+    REGEX.find_iter(input).nth(0).is_some()
+}
+
+// TODO: check values
+fn expiration_year_valid(input: &str) -> bool {
+    lazy_static! {
+        static ref REGEX : Regex = Regex::new(
+                r"eyr:\d{4}\s"
+            ).unwrap();
+    }
+    REGEX.find_iter(input).nth(0).is_some()
+}
+
+// TODO: check values
+fn height_valid(input: &str) -> bool {
+    lazy_static! {
+        static ref REGEX : Regex = Regex::new(
+                r"hgt:\d{2,3}(cm|in)\s"
+            ).unwrap();
+    }
+    REGEX.find_iter(input).nth(0).is_some()
+}
+
+fn hair_color_valid(input: &str) -> bool {
+    lazy_static! {
+        static ref REGEX : Regex = Regex::new(
+                r"hcl:\#[\dabcdef]{6}\s"
+            ).unwrap();
+    }
+    REGEX.find_iter(input).nth(0).is_some()
+}
+
+fn eye_color_valid(input: &str) -> bool {
+    lazy_static! {
+        static ref REGEX : Regex = Regex::new(
+                r"ecl:(amb|blu|brn|gry|grn|hzl|oth)\s"
+            ).unwrap();
+    }
+    REGEX.find_iter(input).nth(0).is_some()
+}
+
+fn passport_id_valid(input: &str) -> bool {
+    lazy_static! {
+        static ref REGEX : Regex = Regex::new(
+                r"pid:\d{9}\s"
+            ).unwrap();
+    }
+    REGEX.find_iter(input).nth(0).is_some()
 }
 
 pub fn part_1(input: &str) -> i64 {
@@ -79,6 +145,35 @@ mod tests {
         let input = "hcl:#cfa07d eyr:2025 pid:166559648
         iyr:2011 ecl:brn hgt:59in";
         assert_eq!(false, is_valid(&input));
+    }
+
+    #[test]
+    fn test_is_valid_regex() {
+        let input = "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
+        byr:1937 iyr:2017 cid:147 hgt:183cm";
+        assert_eq!(true, is_valid_regex(&input));
+
+        let input = "iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
+        hcl:#cfa07d byr:1929";
+        assert_eq!(false, is_valid_regex(&input));
+
+        let input = "hcl:#ae17e1 iyr:2013
+        eyr:2024
+        ecl:brn pid:760753108 byr:1931
+        hgt:179cm";
+        assert_eq!(true, is_valid_regex(&input));
+
+        let input = "hcl:#cfa07d eyr:2025 pid:166559648
+        iyr:2011 ecl:brn hgt:59in";
+        assert_eq!(false, is_valid_regex(&input));
+    }
+
+    #[test]
+    fn test_pid() {
+        let input = "pid:000000001 ";
+        assert_eq!(true, passport_id_valid(&input));
+        let input = "pid:0123456789 ";
+        assert_eq!(false, passport_id_valid(&input));
     }
 
     #[test]
