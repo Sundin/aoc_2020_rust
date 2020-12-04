@@ -4,6 +4,8 @@ use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::HashSet;
 
+use super::files;
+
 
 fn is_valid(input: &str) -> bool {
     input.contains("byr:") &&
@@ -32,7 +34,13 @@ fn birth_year_valid(input: &str) -> bool {
                 r"byr:\d{4}\s"
             ).unwrap();
     }
-    REGEX.find_iter(input).nth(0).is_some()
+    if !REGEX.find_iter(input).nth(0).is_some() {
+        return false
+    }
+    let byr = REGEX.captures_iter(input).nth(0).unwrap();
+    let byr = byr[0].trim().split(":").collect::<Vec<&str>>();
+    println!("{:?}", byr[1]);
+    true
 }
 
 // TODO: check values
