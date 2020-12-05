@@ -24,17 +24,21 @@ impl FromStr for BoardingPass {
 }
 
 pub fn part_1(input: &str) -> i32 {
-    let mut highest = 0;
-    for line in input.lines() {
-        let boarding_pass: BoardingPass = line.parse().unwrap();
-        if boarding_pass.seat_id > highest {
-            highest = boarding_pass.seat_id;
-        }
-    }
-    highest
+    let mut boarding_passes: Vec<BoardingPass> = input.lines()
+        .map(|line| line.parse().unwrap())
+        .collect();
+        
+    boarding_passes.sort_by(|a, b| a.seat_id.cmp(&b.seat_id));
+    boarding_passes.last().unwrap().seat_id
 }
 
 pub fn part_2(input: &str) -> i32 {
+    let mut boarding_passes: Vec<BoardingPass> = input.lines()
+        .map(|line| line.parse().unwrap())
+        .collect();
+        
+    boarding_passes.sort_by(|a, b| a.seat_id.cmp(&b.seat_id));
+
     0
 }
 
