@@ -24,20 +24,12 @@ impl FromStr for BoardingPass {
 }
 
 pub fn part_1(input: &str) -> i32 {
-    let mut boarding_passes: Vec<BoardingPass> = input.lines()
-        .map(|line| line.parse().unwrap())
-        .collect();
-        
-    boarding_passes.sort_by(|a, b| a.seat_id.cmp(&b.seat_id));
+    let boarding_passes = sort_boarding_passes(&input);
     boarding_passes.last().unwrap().seat_id
 }
 
 pub fn part_2(input: &str) -> i32 {
-    let mut boarding_passes: Vec<BoardingPass> = input.lines()
-        .map(|line| line.parse().unwrap())
-        .collect();
-        
-    boarding_passes.sort_by(|a, b| a.seat_id.cmp(&b.seat_id));
+    let boarding_passes = sort_boarding_passes(&input);
 
     let mut previous_seat = 0;
     for bp in boarding_passes {
@@ -47,6 +39,16 @@ pub fn part_2(input: &str) -> i32 {
         previous_seat = bp.seat_id;
     }
     0
+}
+
+fn sort_boarding_passes(input: &str) -> Vec<BoardingPass> {
+    let mut boarding_passes: Vec<BoardingPass> = input.lines()
+        .map(|line| line.parse().unwrap())
+        .collect();
+        
+    boarding_passes.sort_by(|a, b| a.seat_id.cmp(&b.seat_id));
+
+    boarding_passes
 }
 
 #[cfg(test)]
