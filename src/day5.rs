@@ -11,9 +11,12 @@ impl FromStr for BoardingPass {
     type Err = ParseIntError;
 
     fn from_str(input: &str) -> Result<Self, Self::Err> {
-        let mut seat_id = 0;
-        for c in input.chars().rev() {
-            println!("char: {}", c);
+        let mut seat_id: i32 = 0;
+        let base: i32 = 2;
+        for (i, c) in input.chars().rev().enumerate() {
+            if c == 'R' || c == 'B' {
+                seat_id += base.pow(i as u32);
+            }
         }
 
         Ok(BoardingPass { binary: input.to_string(), seat_id: seat_id })
@@ -23,7 +26,6 @@ impl FromStr for BoardingPass {
 pub fn part_1(input: &str) -> i64 {
     for line in input.lines() {
         let boarding_pass: BoardingPass = line.parse().unwrap();
-        println!("bp: {}", boarding_pass.seat_id);
     }
     0
 }
