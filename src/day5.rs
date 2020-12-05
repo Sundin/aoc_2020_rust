@@ -23,14 +23,18 @@ impl FromStr for BoardingPass {
     }
 }
 
-pub fn part_1(input: &str) -> i64 {
+pub fn part_1(input: &str) -> i32 {
+    let mut highest = 0;
     for line in input.lines() {
         let boarding_pass: BoardingPass = line.parse().unwrap();
+        if boarding_pass.seat_id > highest {
+            highest = boarding_pass.seat_id;
+        }
     }
-    0
+    highest
 }
 
-pub fn part_2(input: &str) -> i64 {
+pub fn part_2(input: &str) -> i32 {
     0
 }
 
@@ -42,7 +46,7 @@ mod tests {
     #[test]
     fn test_part_1() {
         let contents = files::get_file_contents("test_input/day5.txt".to_owned()).unwrap();
-        assert_eq!(0, part_1(&contents))
+        assert_eq!(820, part_1(&contents))
     }
 
     #[test]
