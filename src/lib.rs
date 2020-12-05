@@ -76,6 +76,6 @@ fn day4(contents: &str) {
 fn day5(contents: &str) {
     let answer = day5::part_1(&contents);
     println!("Answer for day 5 part 1: {}", answer);
-    let answer = day4::part_2(&contents);
+    let answer = day5::part_2(&contents);
     println!("Answer for day 5 part 2: {}", answer);
 }

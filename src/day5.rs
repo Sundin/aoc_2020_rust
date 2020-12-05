@@ -39,6 +39,13 @@ pub fn part_2(input: &str) -> i32 {
         
     boarding_passes.sort_by(|a, b| a.seat_id.cmp(&b.seat_id));
 
+    let mut previous_seat = 0;
+    for bp in boarding_passes {
+        if bp.seat_id == previous_seat + 2 {
+            return bp.seat_id - 1;
+        }
+        previous_seat = bp.seat_id;
+    }
     0
 }
 
@@ -56,6 +63,6 @@ mod tests {
     #[test]
     fn test_part_2() {
         let contents = files::get_file_contents("test_input/day5.txt".to_owned()).unwrap();
-        assert_eq!(0, part_2(&contents))
+        assert_eq!(566, part_2(&contents))
     }
 }
