@@ -2,21 +2,57 @@ use std::collections::HashSet;
 
 pub fn part_1(input: &str) -> i32 {
     let mut count = 0;
-    let mut passport = String::new();
+    let mut group = String::new();
     for line in input.lines() {
         if line == "" {
-            count += count_unique_letters(&passport);
-            passport = String::new();
+            count += count_unique_letters(&group);
+            group = String::new();
         } else {
-            passport = String::new() + &passport + line + " ";
+            group = String::new() + &group + line + " ";
         }
     }
-    count += count_unique_letters(&passport);
+    count += count_unique_letters(&group);
     count
 }
 
 pub fn part_2(input: &str) -> i32 {
-    0
+    let mut count = 0;
+    let mut group: Vec<&str> = Vec::new();
+    for line in input.lines() {
+        if line == "" {
+            let first = group.first().unwrap();
+            for c in first.chars() {
+                if all_contains_char(&group, c) {
+                    count += 1;
+                }
+            }
+            group = Vec::new();
+        } else {
+            group.push(line);
+        }
+    }
+
+    // TODO: Must find a nicer way of getting the last element too...
+    let first = group.first().unwrap();
+    for c in first.chars() {
+        if all_contains_char(&group, c) {
+            count += 1;
+        }
+    }
+
+    count
+}
+
+fn all_contains_char(group: &Vec<&str>, c: char) -> bool {
+    println!("Group {:?}, searching for {}", group, c);
+    for person in group {
+        println!("Line {}, searching for {}", person, c);
+        if !person.contains(c) {
+            println!("FALSE!!!! Line {}, searching for {}", person, c);
+            return false;
+        }
+    }
+    true
 }
 
 fn count_unique_letters(input: &str) -> i32 {
@@ -44,7 +80,7 @@ mod tests {
     #[test]
     fn test_part_2() {
         let contents = files::get_file_contents("test_input/day6.txt".to_owned()).unwrap();
-        assert_eq!(0, part_2(&contents))
+        assert_eq!(6, part_2(&contents))
     }
 
     #[test]
