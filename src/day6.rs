@@ -1,14 +1,25 @@
 use std::collections::HashSet;
 
 pub fn part_1(input: &str) -> i32 {
-    0
+    let mut count = 0;
+    let mut passport = String::new();
+    for line in input.lines() {
+        if line == "" {
+            count += count_unique_letters(&passport);
+            passport = String::new();
+        } else {
+            passport = String::new() + &passport + line + " ";
+        }
+    }
+    count += count_unique_letters(&passport);
+    count
 }
 
 pub fn part_2(input: &str) -> i32 {
     0
 }
 
-fn count_unique_letters(input: &str) -> usize {
+fn count_unique_letters(input: &str) -> i32 {
     let mut letters: HashSet<char> = HashSet::new();
     for c in input.chars() {
         if c == ' ' || c == '\n' {
@@ -16,7 +27,7 @@ fn count_unique_letters(input: &str) -> usize {
         }
         letters.insert(c);
     }
-    letters.len()
+    letters.len() as i32
 }
 
 #[cfg(test)]
@@ -27,7 +38,7 @@ mod tests {
     #[test]
     fn test_part_1() {
         let contents = files::get_file_contents("test_input/day6.txt".to_owned()).unwrap();
-        assert_eq!(0, part_1(&contents))
+        assert_eq!(11, part_1(&contents))
     }
 
     #[test]
