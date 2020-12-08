@@ -35,7 +35,7 @@ fn bag_contains_color(input: &str, color: &str) -> (bool, String) {
         if i == 0 {
             continue;
         } else if current_color.eq(&color) {
-            println!("{} contains {}", bag_color, current_color);
+            // println!("{} contains {}", bag_color, current_color);
             return (true, bag_color.to_string());
         }
     }
