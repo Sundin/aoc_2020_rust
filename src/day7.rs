@@ -1,17 +1,24 @@
 use lazy_static::lazy_static;
 use regex::Regex;
+use std::collections::HashSet;
 
-pub fn part_1(input: &str) -> i32 {
-    for line in input.lines() {
-        bag_contains_color(&line, "shiny gold");
-    }
-    0
+
+pub fn part_1(input: &str) -> usize {
+    bags_that_contain(input, "shiny gold").len()
 }
 
-fn contains_bag(input: &str, color: &str) {
+fn bags_that_contain(input: &str, color: &str) -> HashSet<String> {
+    let mut found_bags: HashSet<String> = HashSet::new();
     for line in input.lines() {
-        bag_contains_color(&line, "shiny gold");
+        let (found, found_color) = bag_contains_color(&line, &color);
+        if found {
+            found_bags.insert(found_color.to_owned());
+            for bag in bags_that_contain(&input, &found_color) {
+                found_bags.insert(bag);
+            }
+        }
     }
+    found_bags
 }
 
 fn bag_contains_color(input: &str, color: &str) -> (bool, String) {
@@ -29,6 +36,7 @@ fn bag_contains_color(input: &str, color: &str) -> (bool, String) {
             continue;
         } else if current_color.eq(&color) {
             println!("{} contains {}", bag_color, current_color);
+            return (true, bag_color.to_string());
         }
     }
     (false, String::new())
