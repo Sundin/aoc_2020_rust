@@ -26,6 +26,14 @@ impl FromStr for Instruction {
 }
 
 pub fn part_1(input: &str) -> i32 {
+    run_program(&input)
+}
+
+pub fn part_2(input: &str) -> i32 {
+    0
+}
+
+fn run_program(input: &str) -> i32 {
     let mut program: Vec<Instruction> = input.lines()
         .map(|line| line.parse().unwrap())
         .collect();
@@ -57,10 +65,6 @@ pub fn part_1(input: &str) -> i32 {
         }
         index += 1;
     }
-}
-
-pub fn part_2(input: &str) -> i32 {
-    0
 }
 
 #[cfg(test)]
