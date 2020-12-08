@@ -44,11 +44,8 @@ pub fn part_2(input: &str) -> i32 {
 }
 
 fn all_contains_char(group: &Vec<&str>, c: char) -> bool {
-    println!("Group {:?}, searching for {}", group, c);
     for person in group {
-        println!("Line {}, searching for {}", person, c);
         if !person.contains(c) {
-            println!("FALSE!!!! Line {}, searching for {}", person, c);
             return false;
         }
     }
