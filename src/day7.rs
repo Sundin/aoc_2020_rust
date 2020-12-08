@@ -4,16 +4,16 @@ use std::collections::HashSet;
 
 
 pub fn part_1(input: &str) -> usize {
-    bags_that_contain(input, "shiny gold").len()
+    count_bags_that_contain(input, "shiny gold").len()
 }
 
-fn bags_that_contain(input: &str, color: &str) -> HashSet<String> {
+fn count_bags_that_contain(input: &str, color: &str) -> HashSet<String> {
     let mut found_bags: HashSet<String> = HashSet::new();
     for line in input.lines() {
         let (found, found_color) = bag_contains_color(&line, &color);
         if found {
             found_bags.insert(found_color.to_owned());
-            for bag in bags_that_contain(&input, &found_color) {
+            for bag in count_bags_that_contain(&input, &found_color) {
                 found_bags.insert(bag);
             }
         }
@@ -60,6 +60,6 @@ mod tests {
     #[test]
     fn test_part_2() {
         let contents = files::get_file_contents("test_input/day7.txt".to_owned()).unwrap();
-        assert_eq!(0, part_2(&contents))
+        assert_eq!(32, part_2(&contents))
     }
 }
