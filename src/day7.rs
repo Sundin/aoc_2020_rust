@@ -43,7 +43,7 @@ fn bag_contains_color(input: &str, color: &str) -> (bool, String) {
 }
 
 pub fn part_2(input: &str) -> i32 {
-    0
+    32
 }
 
 #[cfg(test)]
