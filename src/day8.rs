@@ -34,7 +34,7 @@ pub fn part_2(input: &str) -> i32 {
 }
 
 fn run_program(input: &str) -> i32 {
-    let mut program: Vec<Instruction> = input.lines()
+    let program: Vec<Instruction> = input.lines()
         .map(|line| line.parse().unwrap())
         .collect();
 
@@ -43,6 +43,11 @@ fn run_program(input: &str) -> i32 {
     let mut visisted: Vec<i32> = Vec::new();
 
     loop {
+        if index as usize >= program.len() {
+            println!("Program terminated!");
+            return accumulator;
+        }
+
         let instruction = program.get(index as usize).unwrap();
 
         if visisted.contains(&index) {
@@ -50,7 +55,7 @@ fn run_program(input: &str) -> i32 {
         }
         visisted.push(index);
 
-        // println!("Index: {}, Accumulator: {}, Operation: {}, argument: {}", index, accumulator, instruction.operation, instruction.argument);
+        println!("Index: {}, Accumulator: {}, Operation: {}, argument: {}", index, accumulator, instruction.operation, instruction.argument);
 
         match instruction.operation.as_str() {
             "acc" => { 
@@ -82,5 +87,11 @@ mod tests {
     fn test_part_2() {
         let contents = files::get_file_contents("test_input/day8.txt".to_owned()).unwrap();
         assert_eq!(0, part_2(&contents))
+    }
+
+    #[test]
+    fn test_termination() {
+        let contents = files::get_file_contents("test_input/day8_b.txt".to_owned()).unwrap();
+        assert_eq!(8, run_program(&contents))
     }
 }
