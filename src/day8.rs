@@ -2,7 +2,7 @@ use std::str::FromStr;
 use std::num::ParseIntError;
 use super::files;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Instruction {
     pub operation: String,
     pub argument: i32,
@@ -26,18 +26,48 @@ impl FromStr for Instruction {
 }
 
 pub fn part_1(input: &str) -> i32 {
-    run_program(&input)
+    let (_, accumulator) = parse_and_run_program(&input);
+    accumulator
 }
 
 pub fn part_2(input: &str) -> i32 {
-    0
-}
-
-fn run_program(input: &str) -> i32 {
     let program: Vec<Instruction> = input.lines()
         .map(|line| line.parse().unwrap())
         .collect();
 
+    //TODO: fix ugly loop
+    for (i, line) in input.lines().enumerate() {
+        let mut program_clone = program.clone();
+        if program_clone.get(i).unwrap().operation == "nop" {
+            let argument = program_clone.get(i).unwrap().argument;
+            program_clone.remove(i);
+            let instruction = Instruction { operation: "jmp".to_string(), argument: argument };
+            program_clone.insert(i, instruction);
+        } else if program_clone.get(i).unwrap().operation == "jmp" {
+            let argument = program_clone.get(i).unwrap().argument;
+            program_clone.remove(i);
+            let instruction = Instruction { operation: "nop".to_string(), argument: argument };
+            program_clone.insert(i, instruction);
+        }
+        
+        let (terminated, accumulator) = run_program(program_clone);
+        if terminated {
+            return accumulator;
+        }
+    }
+    
+    0
+}
+
+fn parse_and_run_program(input: &str) -> (bool, i32) {
+    let program: Vec<Instruction> = input.lines()
+        .map(|line| line.parse().unwrap())
+        .collect();
+
+    run_program(program)
+}
+
+fn run_program(program: Vec<Instruction>) -> (bool, i32) {    
     let mut accumulator = 0;
     let mut index: i32 = 0;
     let mut visisted: Vec<i32> = Vec::new();
@@ -45,13 +75,13 @@ fn run_program(input: &str) -> i32 {
     loop {
         if index as usize >= program.len() {
             println!("Program terminated!");
-            return accumulator;
+            return (true, accumulator);
         }
 
         let instruction = program.get(index as usize).unwrap();
 
         if visisted.contains(&index) {
-            return accumulator
+            return (false, accumulator);
         }
         visisted.push(index);
 
@@ -80,18 +110,18 @@ mod tests {
     #[test]
     fn test_part_1() {
         let contents = files::get_file_contents("test_input/day8.txt".to_owned()).unwrap();
-        assert_eq!(5, part_1(&contents))
+        assert_eq!(5, part_1(&contents));
     }
 
     #[test]
     fn test_part_2() {
         let contents = files::get_file_contents("test_input/day8.txt".to_owned()).unwrap();
-        assert_eq!(0, part_2(&contents))
+        assert_eq!(8, part_2(&contents));
     }
 
     #[test]
     fn test_termination() {
         let contents = files::get_file_contents("test_input/day8_b.txt".to_owned()).unwrap();
-        assert_eq!(8, run_program(&contents))
+        assert_eq!((true, 8), parse_and_run_program(&contents));
     }
 }
