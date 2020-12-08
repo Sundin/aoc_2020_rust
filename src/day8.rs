@@ -27,10 +27,22 @@ impl FromStr for Instruction {
 }
 
 pub fn part_1(input: &str) -> i32 {
-    let mut code: Vec<Instruction> = input.lines()
+    let mut program: Vec<Instruction> = input.lines()
         .map(|line| line.parse().unwrap())
         .collect();
-    0
+
+    let mut accumulator = 0;
+
+    for instruction in program {
+        match instruction.operation.as_str() {
+            "acc" => { accumulator += instruction.argument },
+            "jmp" => {},
+            "nop" => {},
+            _ => { println!("Not implemented") }
+        }
+    };
+
+    accumulator
 }
 
 pub fn part_2(input: &str) -> i32 {
