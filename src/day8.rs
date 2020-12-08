@@ -32,11 +32,17 @@ pub fn part_1(input: &str) -> i32 {
 
     let mut accumulator = 0;
     let mut index: i32 = 0;
+    let mut visisted: Vec<i32> = Vec::new();
 
     loop {
         let instruction = program.get(index as usize).unwrap();
 
-        println!("Index: {}, Operation: {}, argument: {}", index, instruction.operation, instruction.argument);
+        if visisted.contains(&index) {
+            return accumulator
+        }
+        visisted.push(index);
+
+        // println!("Index: {}, Accumulator: {}, Operation: {}, argument: {}", index, accumulator, instruction.operation, instruction.argument);
 
         match instruction.operation.as_str() {
             "acc" => { 
@@ -51,8 +57,6 @@ pub fn part_1(input: &str) -> i32 {
         }
         index += 1;
     }
-
-    accumulator
 }
 
 pub fn part_2(input: &str) -> i32 {
@@ -67,7 +71,7 @@ mod tests {
     #[test]
     fn test_part_1() {
         let contents = files::get_file_contents("test_input/day8.txt".to_owned()).unwrap();
-        assert_eq!(0, part_1(&contents))
+        assert_eq!(5, part_1(&contents))
     }
 
     #[test]
