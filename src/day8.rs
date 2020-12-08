@@ -20,7 +20,6 @@ impl FromStr for Instruction {
             argument = 0 - argument;
         }
 
-        println!("Operation: {}, argument: {}", operation, argument);
 
         Ok(Instruction { operation: operation.to_string(), argument: argument })
     }
@@ -32,15 +31,26 @@ pub fn part_1(input: &str) -> i32 {
         .collect();
 
     let mut accumulator = 0;
+    let mut index: i32 = 0;
 
-    for instruction in program {
+    loop {
+        let instruction = program.get(index as usize).unwrap();
+
+        println!("Index: {}, Operation: {}, argument: {}", index, instruction.operation, instruction.argument);
+
         match instruction.operation.as_str() {
-            "acc" => { accumulator += instruction.argument },
-            "jmp" => {},
+            "acc" => { 
+                accumulator += instruction.argument
+            },
+            "jmp" => {
+                index += instruction.argument;
+                continue;
+            },
             "nop" => {},
             _ => { println!("Not implemented") }
         }
-    };
+        index += 1;
+    }
 
     accumulator
 }
