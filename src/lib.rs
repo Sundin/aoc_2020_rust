@@ -9,6 +9,7 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
 
 pub struct Config {
     pub filename: String,
@@ -45,6 +46,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         6 => day6(&contents),
         7 => day7(&contents),
         8 => day8(&contents),
+        9 => day9(&contents),
         _ => { println!("Not implemented") }
     }
     
@@ -105,4 +107,11 @@ fn day8(contents: &str) {
     println!("Answer for day 8 part 1: {}", answer);
     let answer = day8::part_2(&contents);
     println!("Answer for day 8 part 2: {}", answer);
+}
+
+fn day9(contents: &str) {
+    let answer = day9::part_1(&contents);
+    println!("Answer for day 9 part 1: {}", answer);
+    let answer = day9::part_2(&contents);
+    println!("Answer for day 9 part 2: {}", answer);
 }
