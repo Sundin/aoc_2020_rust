@@ -46,7 +46,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         6 => day6(&contents),
         7 => day7(&contents),
         8 => day8(&contents),
-        9 => day9(files::as_integers(&contents)),
+        9 => day9(files::as_integers_64(&contents)),
         _ => { println!("Not implemented") }
     }
     
@@ -109,7 +109,7 @@ fn day8(contents: &str) {
     println!("Answer for day 8 part 2: {}", answer);
 }
 
-fn day9(contents: Vec<i32>) {
+fn day9(contents: Vec<i64>) {
     let answer = day9::part_1(&contents, 25);
     println!("Answer for day 9 part 1: {}", answer);
     let answer = day9::part_2(&contents);
