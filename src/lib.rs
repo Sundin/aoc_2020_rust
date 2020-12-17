@@ -112,6 +112,6 @@ fn day8(contents: &str) {
 fn day9(contents: Vec<i64>) {
     let answer = day9::part_1(&contents, 25);
     println!("Answer for day 9 part 1: {}", answer);
-    let answer = day9::part_2(&contents);
+    let answer = day9::part_2(&contents, 25);
     println!("Answer for day 9 part 2: {}", answer);
 }
