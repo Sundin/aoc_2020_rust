@@ -59,12 +59,12 @@ mod tests {
     #[test]
     fn test_part_1() {
         let contents = files::get_file_contents("test_input/day5.txt".to_owned()).unwrap();
-        assert_eq!(820, part_1(&contents))
+        assert_eq!(820, part_1(&contents));
     }
 
     #[test]
     fn test_part_2() {
         let contents = files::get_file_contents("test_input/day5.txt".to_owned()).unwrap();
-        assert_eq!(566, part_2(&contents))
+        assert_eq!(566, part_2(&contents));
     }
 }

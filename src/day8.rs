@@ -85,7 +85,7 @@ fn run_program(program: Vec<Instruction>) -> (bool, i32) {
         }
         visisted.push(index);
 
-        println!("Index: {}, Accumulator: {}, Operation: {}, argument: {}", index, accumulator, instruction.operation, instruction.argument);
+        // println!("Index: {}, Accumulator: {}, Operation: {}, argument: {}", index, accumulator, instruction.operation, instruction.argument);
 
         match instruction.operation.as_str() {
             "acc" => { 
