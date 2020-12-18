@@ -1,6 +1,5 @@
 use itertools::Itertools;
 
-
 pub fn part_1(input: &Vec<i64>, preamble: usize) -> i64 {
     for i in preamble..input.len() {
         let target_sum = *input.get(i).unwrap();
@@ -17,10 +16,10 @@ fn find_sum(input: &Vec<i64>, target_sum: i64) -> bool {
     for vpair in input.into_iter().combinations(2) {
         let first = *vpair.first().unwrap();
         let second = *vpair.last().unwrap();
-         let x = first + second;
-         if x == target_sum {
-             return true
-         }
+        let x = first + second;
+        if x == target_sum {
+            return true
+        }
     }
 
     false
@@ -39,7 +38,6 @@ pub fn part_2(input: &Vec<i64>, preamble: usize) -> i64 {
         }
         if current_sum == target_sum {
             contiguous.sort_by(|a, b| a.cmp(b));
-            println!("Contiguous numbers with correct sum: {:?}", contiguous);
             return contiguous.first().unwrap() + contiguous.last().unwrap();
         }
     }
